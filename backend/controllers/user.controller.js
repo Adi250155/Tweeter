@@ -177,6 +177,19 @@ export const updateUser=async (req,res)=>{
 			coverImg = uploadedResponse.secure_url;
 		}
 
+        user.fullName = fullName || user.fullName;
+		user.email = email || user.email;
+		user.username = username || user.username;
+		user.bio = bio || user.bio;
+		user.link = link || user.link;
+		user.profileImg = profileImg || user.profileImg;
+		user.coverImg = coverImg || user.coverImg;
+
+        user =await user.save();
+
+        user.password=null; //password shouldn't be shared in response 
+        return res.status(200).json(user);
+
     }catch(error){
 console.log("Error in updateUser: ", error.message);
 		res.status(500).json({ error: error.message });
