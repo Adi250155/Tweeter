@@ -68,7 +68,7 @@ export const deletePost = async (req,res) =>{
             });
         }
 
-        if(post.user.toString() !== req.user_id.toString()){
+        if(post.user.toString() !== req.user._id.toString()){
             return res.status(401).json({ error: "You are not authorized to delete this post" });
         }
              
@@ -91,7 +91,7 @@ export const deletePost = async (req,res) =>{
 
 export const commentOnPost = async (req,res) =>{
     try{
-            const {text}=req.body();
+            const {text}=req.body;
             const postId=req.params.id;
             const userId=req.user._id;
 
@@ -141,6 +141,7 @@ export const likeUnlikePost = async (req,res) =>{
 
             const updatedLikes=post.likes.filter((id)=>id.toString()!==userId.toString());
             res.status(200).json(updatedLikes);
+            
           }else{
             //like the post
             post.likes.push(userId);
@@ -167,12 +168,10 @@ export const likeUnlikePost = async (req,res) =>{
 
 export const getAllPosts = async (req,res) =>{
     try{
-        const posts= (await Post.find())
-        .toSorted({createdAt:-1})  //-1 means newest first 1 means oldest first
-        .populate({
-            path:"comments.user",
-            select:"-password",
-        });
+        const posts = await Post.find()
+    .sort({ createdAt: -1 })            //-1 means newest post 1 means old post
+    .populate({ path: "user", select: "-password" })
+    .populate({ path: "comments.user", select: "-password" });
 
         if(posts.length===0){
             return res.status(200).json([]);

@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import {v2 as cloudinary} from "cloudinary";
 
 export const getUserProfile=async (req,res)=>{
-        const username=req.params;
+        const {username}=req.params;
 
     try{
         const user= await User.findOne({username}).select("-password");
@@ -114,7 +114,7 @@ export const getSuggestedUser=async (req,res)=>{
     } 
         */
  
-      res.status(200).json(suggestedUsers);
+      res.status(200).json(suggestedUser);
 
 }catch(error){
 	console.log("Error in getSuggestedUsers: ", error.message);
