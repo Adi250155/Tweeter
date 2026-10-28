@@ -29,6 +29,7 @@ app.get("/",(req,res)=>{
 })
 */
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 app.use("/api/auth",authRoutes);
 
 

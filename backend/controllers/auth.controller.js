@@ -17,7 +17,7 @@ export const signup =async(req,res) => {
    
     //check user already exist or not 
     const existingUser =await User.findOne({username});
-    if(!existingUser){
+    if(existingUser){
         return res.status(400).json({
             error:"username is alreaady taken"
         });
@@ -25,7 +25,7 @@ export const signup =async(req,res) => {
 
     //check email aleardy exist or not
       const existingEmail =await User.findOne({email});
-    if(!existingEmail){
+    if(existingEmail){
         return res.status(400).json({
             error:"Email is alreaady taken"
         });
@@ -77,7 +77,7 @@ console.log("Error in signup controller", error.message);
 export const login =async(req,res) =>{
     try{
         const {username,password}=req.body;
-        const user =await user.findOne({username});
+        const user =await User.findOne({username});
         const isPasswordCorrect =await bcrypt.compare(password,user?.password || "");
         if(!user || !isPasswordCorrect){
             return res.status(400).json(
@@ -106,8 +106,16 @@ export const login =async(req,res) =>{
 
 export const logout =async(req,res) =>{
    try{
-           res.cookie("jwt","",{maxAge: 0});
-        res.status(200).json({ message: "Logged out successfully" });
+           res.clearCookie("jwt", {
+            httpOnly: true,
+            sameSite: "strict",
+            secure: process.env.NODE_ENV !== "development"
+        });
+
+        return res.status(200).json({
+            message: "Logged out successfully"
+        });
+     
    }catch(error){
     console.log("Error in logout controller",error.message);
     res.status(500).json({
