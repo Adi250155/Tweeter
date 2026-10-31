@@ -1,33 +1,45 @@
+import { useState } from "react";
 
-import Sidebar from "../../components/common/Sidebar";
+import Posts from "../../components/common/Posts";
+import CreatePost from "./CreatePost";
 
-function HomePage() {
-  return (
-    <div className="flex min-h-screen w-full">
-      <Sidebar />
+const HomePage = () => {
+	const [feedType, setFeedType] = useState("forYou");
 
-      <main className="min-w-0 flex-1 border-r border-base-content/20">
-        <header className="border-b border-base-content/20 p-4">
-          <h1 className="text-xl font-bold">Home</h1>
-        </header>
+	return (
+		<>
+			<div className='flex-[4_4_0] mr-auto border-r border-gray-700 min-h-screen'>
+				{/* Header */}
+				<div className='flex w-full border-b border-gray-700'>
+					<div
+						className={
+							"flex justify-center flex-1 p-3 hover:bg-secondary transition duration-300 cursor-pointer relative"
+						}
+						onClick={() => setFeedType("forYou")}
+					>
+						For you
+						{feedType === "forYou" && (
+							<div className='absolute bottom-0 w-10  h-1 rounded-full bg-primary'></div>
+						)}
+					</div>
+					<div
+						className='flex justify-center flex-1 p-3 hover:bg-secondary transition duration-300 cursor-pointer relative'
+						onClick={() => setFeedType("following")}
+					>
+						Following
+						{feedType === "following" && (
+							<div className='absolute bottom-0 w-10  h-1 rounded-full bg-primary'></div>
+						)}
+					</div>
+				</div>
 
-        <div className="p-4">
-          <p className="text-base-content/70">
-            Welcome to your X clone!
-          </p>
-        </div>
-      </main>
+				{/*  CREATE POST INPUT */}
+				<CreatePost />
 
-      <aside className="hidden w-80 p-4 lg:block">
-        <div className="rounded-2xl bg-base-200 p-4">
-          <h2 className="text-lg font-bold">What's happening</h2>
-          <p className="mt-2 text-sm text-base-content/70">
-            Trends will appear here.
-          </p>
-        </div>
-      </aside>
-    </div>
-  );
-}
-
+				{/* POSTS */}
+				<Posts />
+			</div>
+		</>
+	);
+};
 export default HomePage;

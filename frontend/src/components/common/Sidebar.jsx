@@ -1,66 +1,75 @@
-
-import { Link } from "react-router-dom";
-import {
-  FaRegBell,
-  FaRegEnvelope,
-  FaRegUser,
-  FaEllipsisH,
-} from "react-icons/fa";
-import { HiHome } from "react-icons/hi";
-import { IoSearchOutline } from "react-icons/io5";
 import XSvg from "../svgs/XSvg.jsx";
 
-function Sidebar() {
-  return (
-    <aside className="flex h-screen w-20 flex-col border-r border-base-content/20 px-2 py-4 lg:w-64 lg:px-4">
-      <Link to="/" className="mb-5 w-fit rounded-full p-2 hover:bg-base-content/10">
-        <XSvg className="h-8 w-8" />
-      </Link>
+import { MdHomeFilled } from "react-icons/md";
+import { IoNotifications } from "react-icons/io5";
+import { FaUser } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { BiLogOut } from "react-icons/bi";
 
-      <nav className="flex flex-col gap-2">
-        <Link
-          to="/"
-          className="flex items-center gap-4 rounded-full p-3 hover:bg-base-content/10"
-        >
-          <HiHome className="h-7 w-7" />
-          <span className="hidden text-xl lg:inline">Home</span>
-        </Link>
+const Sidebar = () => {
+	const data = {
+		fullName: "John Doe",
+		username: "johndoe",
+		profileImg: "/avatars/boy1.png",
+	};
 
-        <button className="flex items-center gap-4 rounded-full p-3 hover:bg-base-content/10">
-          <IoSearchOutline className="h-7 w-7" />
-          <span className="hidden text-xl lg:inline">Explore</span>
-        </button>
+	return (
+		<div className='md:flex-[2_2_0] w-18 max-w-52'>
+			<div className='sticky top-0 left-0 h-screen flex flex-col border-r border-gray-700 w-20 md:w-full'>
+				<Link to='/' className='flex justify-center md:justify-start'>
+					<XSvg className='px-2 w-12 h-12 rounded-full fill-white hover:bg-stone-900' />
+				</Link>
+				<ul className='flex flex-col gap-3 mt-4'>
+					<li className='flex justify-center md:justify-start'>
+						<Link
+							to='/'
+							className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+						>
+							<MdHomeFilled className='w-8 h-8' />
+							<span className='text-lg hidden md:block'>Home</span>
+						</Link>
+					</li>
+					<li className='flex justify-center md:justify-start'>
+						<Link
+							to='/notifications'
+							className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+						>
+							<IoNotifications className='w-6 h-6' />
+							<span className='text-lg hidden md:block'>Notifications</span>
+						</Link>
+					</li>
 
-        <button className="flex items-center gap-4 rounded-full p-3 hover:bg-base-content/10">
-          <FaRegBell className="h-6 w-6" />
-          <span className="hidden text-xl lg:inline">Notifications</span>
-        </button>
-
-        <button className="flex items-center gap-4 rounded-full p-3 hover:bg-base-content/10">
-          <FaRegEnvelope className="h-6 w-6" />
-          <span className="hidden text-xl lg:inline">Messages</span>
-        </button>
-
-        <Link
-          to="/signup"
-          className="flex items-center gap-4 rounded-full p-3 hover:bg-base-content/10"
-        >
-          <FaRegUser className="h-6 w-6" />
-          <span className="hidden text-xl lg:inline">Profile</span>
-        </Link>
-
-        <button className="flex items-center gap-4 rounded-full p-3 hover:bg-base-content/10">
-          <FaEllipsisH className="h-6 w-6" />
-          <span className="hidden text-xl lg:inline">More</span>
-        </button>
-      </nav>
-
-      <button className="btn btn-primary mt-5 rounded-full lg:w-full">
-        <span className="lg:hidden">Post</span>
-        <span className="hidden lg:inline">Post</span>
-      </button>
-    </aside>
-  );
-}
-
+					<li className='flex justify-center md:justify-start'>
+						<Link
+							to={`/profile/${data?.username}`}
+							className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+						>
+							<FaUser className='w-6 h-6' />
+							<span className='text-lg hidden md:block'>Profile</span>
+						</Link>
+					</li>
+				</ul>
+				{data && (
+					<Link
+						to={`/profile/${data.username}`}
+						className='mt-auto mb-10 flex gap-2 items-start transition-all duration-300 hover:bg-[#181818] py-2 px-4 rounded-full'
+					>
+						<div className='avatar hidden md:inline-flex'>
+							<div className='w-8 rounded-full'>
+								<img src={data?.profileImg || "/avatar-placeholder.png"} />
+							</div>
+						</div>
+						<div className='flex justify-between flex-1'>
+							<div className='hidden md:block'>
+								<p className='text-white font-bold text-sm w-20 truncate'>{data?.fullName}</p>
+								<p className='text-slate-500 text-sm'>@{data?.username}</p>
+							</div>
+							<BiLogOut className='w-5 h-5 cursor-pointer' />
+						</div>
+					</Link>
+				)}
+			</div>
+		</div>
+	);
+};
 export default Sidebar;

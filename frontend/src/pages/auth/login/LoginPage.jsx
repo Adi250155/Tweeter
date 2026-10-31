@@ -1,51 +1,71 @@
-
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function LoginPage() {
-  return (
-    <div className="flex h-screen w-full items-center justify-center">
-      <div className="flex w-full max-w-5xl items-center justify-center gap-10 p-4">
-        <div className="hidden flex-1 justify-center md:flex">
-          <svg
-            viewBox="0 0 24 24"
-            aria-label="X logo"
-            className="h-72 w-72 fill-current"
-          >
-            <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932zm-1.291 19.49h2.039L6.486 3.24H4.298z" />
-          </svg>
-        </div>
+import XSvg from "../../../components/svgs/XSvg.jsx";
 
-        <div className="flex w-full max-w-md flex-col gap-4">
-          <h1 className="text-4xl font-bold">Welcome back.</h1>
+import { MdOutlineMail } from "react-icons/md";
+import { MdPassword } from "react-icons/md";
 
-          <form className="flex flex-col gap-4">
-            <input
-              type="text"
-              placeholder="Email or Username"
-              className="input input-bordered w-full"
-            />
+const LoginPage = () => {
+	const [formData, setFormData] = useState({
+		username: "",
+		password: "",
+	});
 
-            <input
-              type="password"
-              placeholder="Password"
-              className="input input-bordered w-full"
-            />
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log(formData);
+	};
 
-            <button type="submit" className="btn btn-primary rounded-full">
-              Log in
-            </button>
-          </form>
+	const handleInputChange = (e) => {
+		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
 
-          <p className="text-sm text-base-content/70">
-            Don't have an account?{" "}
-            <Link to="/signup" className="link link-primary">
-              Sign up
-            </Link>
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
+	const isError = false;
 
+	return (
+		<div className='max-w-screen-xl mx-auto flex h-screen'>
+			<div className='flex-1 hidden lg:flex items-center  justify-center'>
+				<XSvg className='lg:w-2/3 fill-white' />
+			</div>
+			<div className='flex-1 flex flex-col justify-center items-center'>
+				<form className='flex gap-4 flex-col' onSubmit={handleSubmit}>
+					<XSvg className='w-24 lg:hidden fill-white' />
+					<h1 className='text-4xl font-extrabold text-white'>{"Let's"} go.</h1>
+					<label className='input input-bordered rounded flex items-center gap-2'>
+						<MdOutlineMail />
+						<input
+							type='text'
+							className='grow'
+							placeholder='username'
+							name='username'
+							onChange={handleInputChange}
+							value={formData.username}
+						/>
+					</label>
+
+					<label className='input input-bordered rounded flex items-center gap-2'>
+						<MdPassword />
+						<input
+							type='password'
+							className='grow'
+							placeholder='Password'
+							name='password'
+							onChange={handleInputChange}
+							value={formData.password}
+						/>
+					</label>
+					<button className='btn rounded-full btn-primary text-white'>Login</button>
+					{isError && <p className='text-red-500'>Something went wrong</p>}
+				</form>
+				<div className='flex flex-col gap-2 mt-4'>
+					<p className='text-white text-lg'>{"Don't"} have an account?</p>
+					<Link to='/signup'>
+						<button className='btn rounded-full btn-primary text-white btn-outline w-full'>Sign up</button>
+					</Link>
+				</div>
+			</div>
+		</div>
+	);
+};
 export default LoginPage;
