@@ -1,7 +1,10 @@
+
+
+import XSvg from "../../../components/svgs/XSvg.jsx";
+
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-import XSvg from "../../../components/svgs/X";
 
 import { MdOutlineMail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
@@ -43,7 +46,9 @@ const SignUpPage = () => {
 		onSuccess: () => {
 			toast.success("Account created successfully");
 
-			
+			{
+				/* Added this line below, after recording the video. I forgot to add this while recording, sorry, thx. */
+			}
 			queryClient.invalidateQueries({ queryKey: ["authUser"] });
 		},
 	});
