@@ -133,7 +133,7 @@ export const updateUser=async (req,res)=>{
          
         let user=await User.findById(userId);
         if(!user){
-            return res.status(404),json({
+            return res.status(404).json({
                 message:"User not found!"
             });
         }
@@ -149,7 +149,7 @@ export const updateUser=async (req,res)=>{
                     error:"Current password is Incorrect!"
                 });
             }
-            if(newPassword<6){
+           if(newPassword.length < 6){
                 return res.status(400).json({ error: "Password must be at least 6 characters long" });
             }
 

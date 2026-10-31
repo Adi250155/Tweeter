@@ -1,4 +1,6 @@
+
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
 
 const EditProfileModal = ({ authUser }) => {
@@ -13,9 +15,24 @@ const EditProfileModal = ({ authUser }) => {
 	});
 
 	const { updateProfile, isUpdatingProfile } = useUpdateUserProfile();
+	const navigate = useNavigate();
 
 	const handleInputChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		try {
+			const updatedUser = await updateProfile(formData);
+
+			document.getElementById("edit_profile_modal").close();
+
+			navigate(`/profile/${updatedUser.username}`);
+		} catch (error) {
+			return;
+		}
 	};
 
 	useEffect(() => {
@@ -40,15 +57,14 @@ const EditProfileModal = ({ authUser }) => {
 			>
 				Edit profile
 			</button>
+
 			<dialog id='edit_profile_modal' className='modal'>
 				<div className='modal-box border rounded-md border-gray-700 shadow-md'>
 					<h3 className='font-bold text-lg my-3'>Update Profile</h3>
+
 					<form
 						className='flex flex-col gap-4'
-						onSubmit={(e) => {
-							e.preventDefault();
-							updateProfile(formData);
-						}}
+						onSubmit={handleSubmit}
 					>
 						<div className='flex flex-wrap gap-2'>
 							<input
@@ -68,6 +84,7 @@ const EditProfileModal = ({ authUser }) => {
 								onChange={handleInputChange}
 							/>
 						</div>
+
 						<div className='flex flex-wrap gap-2'>
 							<input
 								type='email'
@@ -85,6 +102,7 @@ const EditProfileModal = ({ authUser }) => {
 								onChange={handleInputChange}
 							/>
 						</div>
+
 						<div className='flex flex-wrap gap-2'>
 							<input
 								type='password'
@@ -103,6 +121,7 @@ const EditProfileModal = ({ authUser }) => {
 								onChange={handleInputChange}
 							/>
 						</div>
+
 						<input
 							type='text'
 							placeholder='Link'
@@ -111,11 +130,13 @@ const EditProfileModal = ({ authUser }) => {
 							name='link'
 							onChange={handleInputChange}
 						/>
+
 						<button className='btn btn-primary rounded-full btn-sm text-white'>
 							{isUpdatingProfile ? "Updating..." : "Update"}
 						</button>
 					</form>
 				</div>
+
 				<form method='dialog' className='modal-backdrop'>
 					<button className='outline-none'>close</button>
 				</form>
@@ -123,4 +144,5 @@ const EditProfileModal = ({ authUser }) => {
 		</>
 	);
 };
+
 export default EditProfileModal;
